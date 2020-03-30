@@ -1,0 +1,331 @@
+openapi: "3.0.0"
+info:
+  version: 0.0.1
+  title: PKP
+  description: |
+    Big snop
+servers:
+  - url: https://rokas.lt/api
+paths:
+  /register:
+    post:
+      description : "User registration"
+      tags: ['Register']
+      parameters: 
+        - name: "registration"
+          in: "query"
+          description: "User registration"
+          required: true
+          schema:
+            $ref: '#/components/schemas/userReg'
+      responses:
+        '200':
+          description: "Registered a new account"
+        '400':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InernalError'
+  /login:
+    post:
+        description : "User login"
+        tags: ['Login']
+        parameters: 
+          - name: "login"
+            in: "query"
+            description: "User login"
+            required: true
+            schema:
+              $ref: '#/components/schemas/userReg'
+        responses:
+          '200':
+            description: "Login succesful"
+          '400':
+            description: Client error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClientError'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/InernalError'
+                  
+                  
+  /mainZone:
+    post:
+        description : "Register a main zone"
+        tags: ['Main Zone']
+        parameters: 
+          - name: "mainZone"
+            in: "query"
+            description: "Create a main zone"
+            required: true
+            schema:
+              $ref: '#/components/schemas/mainZone'
+        responses:
+          '200':
+            description: "Main zone registered"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/mainZone'
+          '400':
+            description: Client error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClientError'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/InernalError'
+    get:
+        description : "Get all main zones"
+        tags: ['Main Zone']
+        responses:
+          '200':
+            description: "All main zones received"
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/mainZone'
+          '400':
+            description: Client error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClientError'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/InernalError'
+                  
+  /mainZone/{id}:
+    put:
+      description : "Change a main zone"
+      tags: ['Main Zone']
+      parameters: 
+        - name: "id"
+          in: "path"
+          description: "Zone ID"
+          required: true
+          schema:
+            $ref: '#/components/schemas/mainZone'
+      responses:
+        '200':
+          description: "Main zone changed"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mainZone'
+        '400':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InernalError'
+                
+  /userZone:
+    post:
+        description : "Register a user zone"
+        tags: ['User Zone']
+        parameters: 
+          - name: "userZone"
+            in: "query"
+            description: "Create a user zone"
+            required: true
+            schema:
+              $ref: '#/components/schemas/userZone'
+        responses:
+          '200':
+            description: "User zone registered"
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/userZone'
+          '400':
+            description: Client error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClientError'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/InernalError'
+    get:
+        description : "Get all user zones"
+        tags: ['User Zone']
+        responses:
+          '200':
+            description: "All user zones received"
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/userZone'
+          '400':
+            description: Client error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ClientError'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/InernalError'
+                  
+  /userZone/{id}:
+    put:
+      description : "Change a user zone"
+      tags: ['User Zone']
+      parameters: 
+        - name: "id"
+          in: "path"
+          description: "Zone ID"
+          required: true
+          schema:
+            $ref: '#/components/schemas/userZone'
+      responses:
+        '200':
+          description: "Main zone changed"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userZone'
+        '400':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InernalError'
+                
+  /userZone/{id}/rate:
+    post:
+      description : "Change a user zone"
+      tags: ['Rating']
+      parameters: 
+        - name: "id"
+          in: "path"
+          description: "Zone ID"
+          required: true
+          schema:
+            $ref: '#/components/schemas/Rating'
+      responses:
+        '200':
+          description: "Zone rated"
+        '400':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InernalError'    
+                
+  
+components:
+  schemas:
+    userReg:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          
+    mainZone:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+        bounds:
+          type: array
+          items:
+            $ref: Coords
+    
+    userZone:
+      type: object
+      properties:
+        name:
+          type: string
+        coordinates:
+          $ref: Coords
+        description:
+          type: string
+        timeStart:
+          type: string
+          format: time
+        timeEnd:
+          type: string
+          format: time
+        image:
+          type: string
+            
+    Coords:
+      type: object
+      properties:
+        x:
+          type: number
+        y:
+          type: number
+  
+    Rating:
+      type: object
+      properties:
+        userId:
+          type: integer
+        rating:
+          type: number
+          minimum: 0.0
+          maximum: 5.0
+    
+    ClientError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'Client Error'
+          
+    InernalError:
+      type: object
