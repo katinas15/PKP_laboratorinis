@@ -5,14 +5,14 @@ const router = new express.Router()
 var jwt = require('jsonwebtoken');
 const jwtKey = 'KLMNjPrSt98'
 
-router.post('/rating/:id/rate', async (req, res) => {
+router.post('/mainZone/:id/rate', async (req, res) => {
     const _id = req.params.id
     const { userId, rating } = req.body
-    const mainZone = new MainZone({ userId: userId, userZoneId: _id, rating: rating })
+    const zoneRating = new Rating({ userId: userId, userZoneId: _id, rating: rating })
 
     try {
-        await mainZone.save()
-        res.status(201).send(mainZone)
+        await zoneRating.save()
+        res.status(201).send(zoneRating)
     } catch (e) {
         res.status(400).send(e)
     }
