@@ -28,8 +28,6 @@ router.get('/mainZone', async (req, res) => {
 
 router.put('/mainZone/:id', async (req, res) => {
     const _id = req.params.id
-    console.log(_id);
-    console.log(req.body);
     try {
         const mainZone = await MainZone.findByIdAndUpdate(_id, req.body, { new: true })
         if (!mainZone) {

@@ -28,8 +28,6 @@ router.get('/userZone', async (req, res) => {
 
 router.put('/userZone/:id', async (req, res) => {
     const _id = req.params.id
-    console.log(_id);
-    console.log(req.body);
     try {
         const userZone = await UserZone.findByIdAndUpdate(_id, req.body, { new: true })
         if (!userZone) {

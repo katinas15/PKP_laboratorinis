@@ -20,7 +20,6 @@ router.post('/register', async (req, res) => {
         await user.save()
         res.send(JSON.stringify({ accessToken: token }));
     } catch (e) {
-        console.log()
         res.status(400).send(e)
     }
 })
