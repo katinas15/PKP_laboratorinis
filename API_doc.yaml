@@ -282,7 +282,7 @@ components:
         bounds:
           type: array
           items:
-            $ref: Coords
+            $ref: '#/components/schemas/Coords'
     
     userZone:
       type: object
@@ -329,3 +329,4 @@ components:
           
     InernalError:
       type: object
+      
