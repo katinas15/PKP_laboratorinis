@@ -20,12 +20,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     List<Zone> zones;
+    Map<String, Integer> colors = new HashMap<String, Integer>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,27 +43,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        colors.put("raudona", Color.argb(100,252, 40, 3));
+        colors.put("zalia", Color.argb(100,15, 219, 66));
+        colors.put("geltona", Color.argb(100,252, 219, 3));
+        colors.put("melyna", Color.argb(100,3, 119, 252));
+
         mMap = googleMap;
 
-        MainZones get = new MainZones();
+        GetMainZones get = new GetMainZones();
         get.execute();
 
-        PolygonOptions rectangle = new PolygonOptions();
-        for(Zone zone : zones){
-          //  rectangle.add(new LatLng(zone.getBounds().ge));
-            //.add(new LatLng(54.694380, 25.302390),
-        }
-
-
-        LatLng sydney = new LatLng(54.694380, 25.302390);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.setMaxZoomPreference(0.1f);
-        CameraUpdateFactory.zoomIn();
+        mMap.setMinZoomPreference(14.0f);
+        LatLng vilnius = new LatLng(54.694380, 25.302390);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(vilnius));
 
 
     }
 
-    private final class MainZones extends AsyncTask<String, String, String> {
+    private final class GetMainZones extends AsyncTask<String, String, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -83,6 +84,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             System.out.println("GAUTA: " + result);
             Gson gson = new Gson();
             zones = gson.fromJson(result, new TypeToken<List<Zone>>() {}.getType());
+
+            for(Zone zone : zones){
+                PolygonOptions rectangle = new PolygonOptions();
+                for(Coords coords : zone.getBounds()){
+                    rectangle.add(new LatLng(coords.getX(), coords.getY()));
+                }
+                rectangle.strokeColor(colors.get(zone.getColor()));
+                rectangle.fillColor(colors.get(zone.getColor()));
+
+                mMap.addPolygon(rectangle);
+            }
+
+
         }
     }
 }
