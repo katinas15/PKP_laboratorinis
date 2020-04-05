@@ -17,6 +17,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.internal.Constants;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
@@ -52,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static LatLng userLocation;
     LatLng clickLocation;
     String provider;
+    RelativeLayout parkavimoZona;
 
 
     @Override
@@ -74,6 +78,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        parkavimoZona = (RelativeLayout)findViewById(R.id.parkavimoZona);
+        System.out.println(parkavimoZona);
+        parkavimoZona.animate().translationY(parkavimoZona.getHeight()).alpha(0.0f)
+                .setDuration(300);
+
         mMap = googleMap;
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -107,13 +116,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMapLongClick(LatLng latLng) {
                 clickLocation = latLng;
                 mMap.addMarker(new MarkerOptions()
-                        .position(clickLocation)
-                        .title("Hello world"));
+                        .position(clickLocation));
             }
         });
 
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                parkavimoZona.animate().translationY(parkavimoZona.getHeight()).alpha(0.0f)
+                        .setDuration(300);
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                parkavimoZona.animate().translationY(0f).alpha(1.0f)
+                        .setDuration(300);
+                return false;
+            }
+
+        });
+
+
+
 
     }
+
 
     private final class GetMainZones extends AsyncTask<String, String, String> {
         @Override
