@@ -289,8 +289,8 @@ components:
       properties:
         name:
           type: string
-        coordinates:
-          $ref: Coords
+        point:
+          $ref: '#/components/schemas/Coords'
         description:
           type: string
         timeStart:
