@@ -1,6 +1,5 @@
 package com.example.maps;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Criteria;
@@ -17,29 +17,19 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.common.internal.Constants;
-
-import com.google.android.gms.*;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     List<Zone> zones;
+    List<UserMarker> markers;
     Map<String, Integer> colors = new HashMap<String, Integer>();
 
     LocationManager locationManager;
@@ -106,17 +97,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         colors.put("geltona", Color.argb(100,252, 219, 3));
         colors.put("melyna", Color.argb(100,3, 119, 252));
 
-        GetMainZones get = new GetMainZones();
-        get.execute();
+        GetMainZones getMain = new GetMainZones();
+        getMain.execute();
+
+        GetUserZones getUser = new GetUserZones();
+        getUser.execute();
 
         mMap.setMinZoomPreference(10.0f);
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                clickLocation = latLng;
-                mMap.addMarker(new MarkerOptions()
-                        .position(clickLocation));
+                Intent intent = new Intent(MapsActivity.this, create_zone.class);
+                intent.putExtra("x", latLng.latitude);
+                intent.putExtra("y", latLng.longitude);
+                startActivity(intent);
             }
         });
 
@@ -138,9 +133,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
 
+    }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(markers != null) markers.clear();
+        GetUserZones getUser = new GetUserZones();
+        getUser.execute();
     }
 
 
@@ -158,7 +158,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return NetController.sendGet(url);
             } catch (Exception e) {
                 e.printStackTrace();
-                return "Error! Unable to retrieve data from database!";
+                return "Error";
             }
         }
 
@@ -167,11 +167,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             super.onPostExecute(result);
             System.out.println("GAUTA: " + result);
             Gson gson = new Gson();
-            zones = gson.fromJson(result, new TypeToken<List<Zone>>() {}.getType());
 
-            for(Zone zone : zones){
+            if (result == "Error") return;
+
+            zones = gson.fromJson(result, new TypeToken<List<Zone>>() {
+            }.getType());
+
+            for (Zone zone : zones) {
                 PolygonOptions rectangle = new PolygonOptions();
-                for(Coords coords : zone.getBounds()){
+                for (Coords coords : zone.getBounds()) {
                     rectangle.add(new LatLng(coords.getX(), coords.getY()));
                 }
                 rectangle.strokeColor(colors.get(zone.getColor()));
@@ -179,9 +183,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 mMap.addPolygon(rectangle);
             }
-
-
         }
+    }
+
+
+
+        private final class GetUserZones extends AsyncTask<String, String, String> {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                Toast.makeText(MapsActivity.this, "Siunčiami marker duomenys", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected String doInBackground(String... strings) {
+                String url = "/userZone";
+                try {
+                    return NetController.sendGet(url);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "Error";
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                System.out.println("GAUTA: " + result);
+                Gson gson = new Gson();
+
+                if(result == "Error") return;
+
+                markers = gson.fromJson(result, new TypeToken<List<UserMarker>>() {}.getType());
+
+                for(UserMarker marker : markers){
+                        LatLng location = new LatLng(marker.getPoint().getX(), marker.getPoint().getY());
+                        mMap.addMarker(new MarkerOptions()
+                        .position(location));
+                }
+            }
     }
 
 

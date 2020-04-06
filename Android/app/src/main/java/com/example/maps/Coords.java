@@ -2,8 +2,8 @@ package com.example.maps;
 
 public class Coords {
     private String id;
-    private float x;
-    private float y;
+    private double x;
+    private double y;
 
     public Coords(String id, int x, int y) {
         this.id = id;
@@ -15,11 +15,11 @@ public class Coords {
         return id;
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 }

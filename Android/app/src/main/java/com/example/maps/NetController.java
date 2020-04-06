@@ -12,7 +12,8 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 public class NetController {
-    public static String serverIp = "http://openag.pro:3111";
+    //public static String serverIp = "http://openag.pro:3111";
+    public static String serverIp = "http://192.168.0.105:3000";
 
     public static String sendPost(String r_url , String postDataParams) throws Exception {
         URL url = new URL(serverIp + r_url);
