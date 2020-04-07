@@ -18,18 +18,23 @@ router.post('/userZone/:id/rate', async (req, res) => {
     }
 })
 
-router.get('/userZone/:id', async (req, res) => {
-    const _id = req.params.id
-    try {
-        const userZone = await UserZone.findById(_id, req.body)
-        if (!userZone) {
-            return res.status(404).send()
-        }
-        res.send(userZone)
+router.get('/userZone/:id/rate', async (req, res) => {
+
+    try{
+        Rating.find({
+            "userZoneId" : {$eq: req.params.id}
+        }).exec(function(err, rating){
+            if (!rating) {
+                return res.status(404).send()
+            }
+            res.send(rating)
+        })
     } catch (e) {
         console.log(e);
         res.status(500).send()
     }
+    
+
 })
 
 module.exports = router
