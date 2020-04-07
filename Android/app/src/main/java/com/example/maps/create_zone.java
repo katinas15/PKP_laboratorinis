@@ -11,10 +11,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import java.io.Serializable;
-
 public class create_zone extends AppCompatActivity {
     double x;
     double y;
@@ -54,7 +50,7 @@ public class create_zone extends AppCompatActivity {
     }
 
     public void nemokamaChange(View v){
-        EditText kaina = findViewById(R.id.kaina);
+        EditText kaina = findViewById(R.id.kainaOver);
         CheckBox checkBox = findViewById(R.id.nemokama);
         if(checkBox.isChecked()){
             kaina.setFocusable(false);
@@ -71,13 +67,15 @@ public class create_zone extends AppCompatActivity {
     }
 
     public void issaugotiZona(View v){
-        EditText pav = findViewById(R.id.pavadinimas);
-        EditText apr = findViewById(R.id.aprasymas);
+        String userId = "1";
+
+        EditText pav = findViewById(R.id.pavadinimasOver);
+        EditText apr = findViewById(R.id.aprasymasOver);
         EditText nuo = findViewById(R.id.nuoInput);
         EditText iki = findViewById(R.id.ikiInput);
-        EditText kaina = findViewById(R.id.kaina);
+        EditText kaina = findViewById(R.id.kainaOver);
         if(pav.getText().toString().length() < 3 || nuo.getText().toString().length() < 5 || iki.getText().toString().length() < 5 || nuo.getText().toString().length() < 1){
-            Toast.makeText(create_zone.this, "Login and password have to be at least 3 characters", Toast.LENGTH_LONG).show();
+            Toast.makeText(create_zone.this, "Pilnai užpildykite visus laukus", Toast.LENGTH_LONG).show();
         }
         else{
             String send;
@@ -88,7 +86,10 @@ public class create_zone extends AppCompatActivity {
                     ",\"y\":" + y +
                     "}," +
                     " \"description\":\"" + apr.getText().toString() + "\", \"timeStart\": \"" + nuo.getText().toString()
-                        + "\", \"timeEnd\":\"" + iki.getText().toString() + "\", \"image\": \"empty\"}" ;
+                        + "\", \"timeEnd\":\"" + iki.getText().toString() + "\", \"image\": \"empty\"," +
+                    "\"userId\":\"" + userId + "\"," +
+                    "\"kaina\":\"" + kaina.getText().toString() + "\"" +
+                    "}" ;
 
 
             UserZoneRegister reg = new UserZoneRegister();

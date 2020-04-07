@@ -19,7 +19,6 @@ router.post('/userZone/:id/rate', async (req, res) => {
 })
 
 router.get('/userZone/:id/rate', async (req, res) => {
-
     try{
         Rating.find({
             "userZoneId" : {$eq: req.params.id}

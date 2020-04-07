@@ -22,12 +22,12 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginLeft="13dp"
-        android:layout_marginTop="316dp"
-        android:layout_marginEnd="97dp"
-        android:layout_marginRight="97dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="322dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginRight="65dp"
+        android:layout_marginBottom="-5dp"
         android:animateLayoutChanges="true"
         android:background="#FFFFFF">
 
@@ -40,7 +40,7 @@
             map:srcCompat="@drawable/image" />
 
         <TextView
-            android:id="@+id/pavadinimas"
+            android:id="@+id/pavadinimasOver"
             android:layout_width="209dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nuotrauka"
@@ -55,10 +55,10 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/kaina"
+            android:id="@+id/kainaOver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pavadinimas"
+            android:layout_below="@+id/pavadinimasOver"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="10dp"
@@ -68,50 +68,40 @@
             android:textSize="12sp" />
 
         <RatingBar
-            android:id="@+id/ratingBar2"
+            android:id="@+id/ratingBarShow"
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pavadinimas"
-            android:layout_marginStart="3dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/ratingNum"
-            android:layout_toRightOf="@+id/ratingNum"
-            android:numStars="5"
-            android:rating="4" />
-
-        <TextView
-            android:id="@+id/ratingNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pavadinimas"
+            android:layout_below="@+id/pavadinimasOver"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginStart="29dp"
-            android:layout_marginLeft="29dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginLeft="27dp"
             android:layout_marginTop="10dp"
-            android:text="4"
-            android:textSize="12sp" />
+            android:clickable="false"
+            android:focusable="auto"
+            android:longClickable="false"
+            android:numStars="5"
+            android:stepSize=".5" />
 
         <TextView
             android:id="@+id/reviewsNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pavadinimas"
+            android:layout_below="@+id/pavadinimasOver"
             android:layout_marginStart="2dp"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/ratingBar2"
-            android:layout_toRightOf="@+id/ratingBar2"
+            android:layout_toEndOf="@+id/ratingBarShow"
+            android:layout_toRightOf="@+id/ratingBarShow"
             android:text="(3)"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/laikas"
+            android:id="@+id/laikasOver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ratingBar2"
+            android:layout_below="@+id/ratingBarShow"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_marginStart="29dp"
@@ -121,10 +111,10 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/aprasymas"
+            android:id="@+id/aprasymasOver"
             android:layout_width="231dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/laikas"
+            android:layout_below="@+id/laikasOver"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentEnd="true"
@@ -141,7 +131,7 @@
             android:id="@+id/linija"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_below="@+id/aprasymas"
+            android:layout_below="@+id/aprasymasOver"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentEnd="true"
@@ -154,24 +144,20 @@
             android:background="@android:color/darker_gray"
             android:foregroundGravity="center" />
 
-        <TextView
-            android:id="@+id/rodytiKelia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/aprasymas"
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_below="@+id/linija"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:autoText="false"
-            android:gravity="center"
-            android:text="Rodyti kelią"
-            android:textColor="#2196F3" />
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="31dp"
+            android:layout_marginRight="31dp" />
 
     </RelativeLayout>
 

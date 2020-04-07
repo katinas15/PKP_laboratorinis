@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/pavadinimas"
+        android:id="@+id/pavadinimasOver"
         android:layout_width="384dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -48,7 +48,7 @@
         android:id="@+id/nemokama"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/kaina"
+        android:layout_below="@+id/kainaOver"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_marginStart="17dp"
@@ -58,7 +58,7 @@
         android:text="Nemokama" />
 
     <EditText
-        android:id="@+id/kaina"
+        android:id="@+id/kainaOver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/visaPara"
@@ -75,7 +75,7 @@
         android:id="@+id/ikiInput"
         android:layout_width="177dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/aprasymas"
+        android:layout_below="@+id/aprasymasOver"
         android:layout_marginStart="27dp"
         android:layout_marginLeft="27dp"
         android:layout_marginTop="92dp"
@@ -101,7 +101,7 @@
         android:id="@+id/nuoInput"
         android:layout_width="177dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/aprasymas"
+        android:layout_below="@+id/aprasymasOver"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_marginStart="15dp"
@@ -136,10 +136,10 @@
         android:text="Iki" />
 
     <EditText
-        android:id="@+id/aprasymas"
+        android:id="@+id/aprasymasOver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pavadinimas"
+        android:layout_below="@+id/pavadinimasOver"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"

@@ -17,7 +17,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -47,6 +50,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LatLng clickLocation;
     String provider;
     RelativeLayout parkavimoZona;
+    String userId;
+    List<Rating> ratings;
 
 
     @Override
@@ -54,6 +59,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Intent dabar = this.getIntent();
+        userId  = (String) dabar.getSerializableExtra("userId");
+        if(userId == null){
+            Intent main_window = new Intent(MapsActivity.this, LoginActivity.class);
+            startActivity(main_window);
+        }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -126,8 +139,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                parkavimoZona.animate().translationY(0f).alpha(1.0f)
-                        .setDuration(300);
+                TextView pav = findViewById(R.id.pavadinimasOver);
+                TextView apr = findViewById(R.id.aprasymasOver);
+                TextView laikas = findViewById(R.id.laikasOver);
+                TextView kaina = findViewById(R.id.kainaOver);
+
+                for(UserMarker m : markers){
+                    if(m.getPoint().getX() == marker.getPosition().latitude && m.getPoint().getY() == marker.getPosition().longitude){
+                        pav.setText(m.getName());
+                        apr.setText(m.getDescription());
+                        laikas.setText(m.getTimeStart() + ":" + m.getTimeEnd());
+                        kaina.setText(Float.toString(m.getKaina()));
+
+
+                        GetZoneRating rate = new GetZoneRating();
+                        System.out.println(m.getId());
+                        rate.execute(m.getId());
+
+                        parkavimoZona.animate().translationY(0f).alpha(1.0f)
+                                .setDuration(300);
+                    }
+                }
+
                 return false;
             }
 
@@ -142,7 +175,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GetUserZones getUser = new GetUserZones();
         getUser.execute();
     }
-
 
     private final class GetMainZones extends AsyncTask<String, String, String> {
         @Override
@@ -186,45 +218,87 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    private final class GetUserZones extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(MapsActivity.this, "Siunčiami marker duomenys", Toast.LENGTH_SHORT).show();
+        }
 
-
-        private final class GetUserZones extends AsyncTask<String, String, String> {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                Toast.makeText(MapsActivity.this, "Siunčiami marker duomenys", Toast.LENGTH_SHORT).show();
+        @Override
+        protected String doInBackground(String... strings) {
+            String url = "/userZone";
+            try {
+                return NetController.sendGet(url);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error";
             }
+        }
 
-            @Override
-            protected String doInBackground(String... strings) {
-                String url = "/userZone";
-                try {
-                    return NetController.sendGet(url);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return "Error";
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            System.out.println("GAUTA: " + result);
+            Gson gson = new Gson();
+
+            if(result == "Error") return;
+
+            markers = gson.fromJson(result, new TypeToken<List<UserMarker>>() {}.getType());
+
+            for(UserMarker marker : markers){
+                    LatLng location = new LatLng(marker.getPoint().getX(), marker.getPoint().getY());
+                    mMap.addMarker(new MarkerOptions()
+                    .position(location));
+            }
+        }
+}
+
+    private final class GetZoneRating extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(MapsActivity.this, "gaunami zone rating", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String postDataParams = params[0];
+            String url = "/userZone/" + postDataParams + "/rate";
+            System.out.println(url);
+            try {
+                return NetController.sendGet(url);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            System.out.println("GAUTA: " + result);
+            Gson gson = new Gson();
+            if(result == "Error") return;
+
+            ratings = gson.fromJson(result, new TypeToken<List<Rating>>() {}.getType());
+
+            RatingBar bar = findViewById(R.id.ratingBarShow);
+            TextView numRate = findViewById(R.id.reviewsNum);
+            float rating = 0;
+            for(Rating r : ratings){
+                rating += r.getRating();
+                if(r.getUserId() == userId){
+                    RatingBar rate = findViewById(R.id.ratingBar);
+                    rate.setRating(r.getRating());
                 }
             }
+            rating /= ratings.size();
+            numRate.setText("(" + ratings.size() + ")");
+            bar.setRating(rating);
 
-            @Override
-            protected void onPostExecute(String result) {
-                super.onPostExecute(result);
-                System.out.println("GAUTA: " + result);
-                Gson gson = new Gson();
-
-                if(result == "Error") return;
-
-                markers = gson.fromJson(result, new TypeToken<List<UserMarker>>() {}.getType());
-
-                for(UserMarker marker : markers){
-                        LatLng location = new LatLng(marker.getPoint().getX(), marker.getPoint().getY());
-                        mMap.addMarker(new MarkerOptions()
-                        .position(location));
-                }
-            }
+        }
     }
-
-
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
