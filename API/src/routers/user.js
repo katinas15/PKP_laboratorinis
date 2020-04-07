@@ -18,7 +18,7 @@ router.post('/register', async (req, res) => {
             expiresIn: jwtExpireSeconds,
         })
         await user.save()
-        res.send(JSON.stringify({ accessToken: token }));
+        res.send(user);
     } catch (e) {
         res.status(400).send(e)
     }
@@ -40,7 +40,7 @@ router.post('/login', async (req, res) => {
                 algorithm: 'HS256',
                 expiresIn: jwtExpireSeconds,
             })
-            res.send(JSON.stringify({ accessToken: token }));
+            res.send(user);
             res.end()
         } else {
             return res.status(401).end();
