@@ -29,6 +29,16 @@ const UserZone = mongoose.model('UserZone', {
         type: String,
         required: false,
         trim: true
+    },
+    userId: {
+        type: String,
+        required: false,
+        trim: true
+    },
+    kaina: {
+        type: Number,
+        required: false,
+        trim: true
     }
 })
 
