@@ -22,4 +22,6 @@ public class Rating {
     public float getRating() {
         return rating;
     }
+
+    public String getRatingId(){return "asd";}
 }

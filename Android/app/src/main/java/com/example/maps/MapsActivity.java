@@ -177,13 +177,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void rate(View v){
         RatingBar rate = findViewById(R.id.ratingBar);
         rate.getRating();
+        String ratingId = null;
         for(Rating r : ratings){
             if(r.getUserId() == userId){
+                ratingId = r.getRatingId();
                 return;
             }
         }
-        PostZoneRating post = new PostZoneRating();
-        post.execute(currentMarkerId, Float.toString(rate.getRating()));
+        if (ratingId != null) {
+            PutZoneRating put = new PutZoneRating();
+            put.execute(ratingId, Float.toString(rate.getRating()));
+        }
+        else{
+            PostZoneRating post = new PostZoneRating();
+            post.execute(currentMarkerId, Float.toString(rate.getRating()));
+        }
     }
 
     @Override
@@ -223,15 +231,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             zones = gson.fromJson(result, new TypeToken<List<Zone>>() {
             }.getType());
 
-            for (Zone zone : zones) {
-                PolygonOptions rectangle = new PolygonOptions();
-                for (Coords coords : zone.getBounds()) {
-                    rectangle.add(new LatLng(coords.getX(), coords.getY()));
-                }
-                rectangle.strokeColor(colors.get(zone.getColor()));
-                rectangle.fillColor(colors.get(zone.getColor()));
+            try {
+                for (Zone zone : zones) {
+                    PolygonOptions rectangle = new PolygonOptions();
+                    for (Coords coords : zone.getBounds()) {
+                        rectangle.add(new LatLng(coords.getX(), coords.getY()));
+                    }
+                    rectangle.strokeColor(colors.get(zone.getColor()));
+                    rectangle.fillColor(colors.get(zone.getColor()));
 
-                mMap.addPolygon(rectangle);
+                    mMap.addPolygon(rectangle);
+                }
+            }
+            catch (Exception e){
+                System.out.println(e);
             }
         }
     }
@@ -264,10 +277,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             markers = gson.fromJson(result, new TypeToken<List<UserMarker>>() {}.getType());
 
-            for(UserMarker marker : markers){
+            try {
+                for (UserMarker marker : markers) {
                     LatLng location = new LatLng(marker.getPoint().getX(), marker.getPoint().getY());
                     mMap.addMarker(new MarkerOptions()
-                    .position(location));
+                            .position(location));
+                }
+            }
+            catch (Exception e){
+                System.out.println(e);
             }
         }
 }
@@ -311,7 +329,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 String send = "{" +
                         "\"userId\": \"" + params[1] +
-                        "\"rating\":" + params;
+                        "\", \"rating\":\"" + Float.parseFloat(params[2]) + "\"}";
                 return NetController.sendPost(url, send);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -331,19 +349,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private final class PutZoneRating extends AsyncTask<String, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Toast.makeText(MapsActivity.this, "gaunami zone rating", Toast.LENGTH_SHORT).show();
-        }
 
         @Override
         protected String doInBackground(String... params) {
-            String postDataParams = params[0];
-            String url = "/rating/" + postDataParams + "/rate";
-            System.out.println(url);
+            String url = "/rating/" + params[0] + "/rate";
+            String send = "{" +
+                    "\"rating\": \"" + params[1]
+                    + "\"}";
             try {
-                return NetController.sendPut(url, postDataParams);
+                return NetController.sendPut(url, send);
             } catch (Exception e) {
                 e.printStackTrace();
                 return "Error";
