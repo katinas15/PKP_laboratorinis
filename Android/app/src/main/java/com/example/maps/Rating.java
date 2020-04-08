@@ -1,11 +1,14 @@
 package com.example.maps;
 
 public class Rating {
+    private String _id;
     private String userId;
     private String userZoneId;
     private float rating;
 
-    public Rating(String userId, String userZoneId, float rating) {
+
+    public Rating(String _id, String userId, String userZoneId, float rating) {
+        this._id = _id;
         this.userId = userId;
         this.userZoneId = userZoneId;
         this.rating = rating;
@@ -23,5 +26,7 @@ public class Rating {
         return rating;
     }
 
-    public String getRatingId(){return "asd";}
+    public String get_id() {
+        return _id;
+    }
 }

@@ -52,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LatLng clickLocation;
     String provider;
     RelativeLayout parkavimoZona;
-    String userId;
+    User user;
     List<Rating> ratings;
     String currentMarkerId;
 
@@ -64,8 +64,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         Intent dabar = this.getIntent();
-        userId  = (String) dabar.getSerializableExtra("userId");
-        if(userId == null){
+
+        Gson gson = new Gson();
+        user = gson.fromJson((String) dabar.getSerializableExtra("userId"), new TypeToken<User>() {}.getType());
+        if(user == null){
             Intent main_window = new Intent(MapsActivity.this, LoginActivity.class);
             startActivity(main_window);
         }
@@ -145,6 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+
                 TextView pav = findViewById(R.id.pavadinimasOver);
                 TextView apr = findViewById(R.id.aprasymasOver);
                 TextView laikas = findViewById(R.id.laikasOver);
@@ -174,14 +177,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+
     public void rate(View v){
         RatingBar rate = findViewById(R.id.ratingBar);
         rate.getRating();
         String ratingId = null;
         for(Rating r : ratings){
-            if(r.getUserId() == userId){
-                ratingId = r.getRatingId();
-                return;
+            if(r.getUserId().equals(user.getId())){
+                ratingId = r.get_id();
+                break;
             }
         }
         if (ratingId != null) {
@@ -190,7 +194,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else{
             PostZoneRating post = new PostZoneRating();
-            post.execute(currentMarkerId, Float.toString(rate.getRating()));
+            post.execute(currentMarkerId, user.getId(), Float.toString(rate.getRating()));
         }
     }
 
@@ -342,8 +346,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             super.onPostExecute(result);
             System.out.println("GAUTA: " + result);
             if(result == "Error") return;
-
-            refreshRating(result);
+            GetZoneRating rate = new GetZoneRating();
+            rate.execute(currentMarkerId);
 
         }
     }
@@ -354,7 +358,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected String doInBackground(String... params) {
             String url = "/rating/" + params[0] + "/rate";
             String send = "{" +
-                    "\"rating\": \"" + params[1]
+                    "\"rating\": \"" + Float.parseFloat(params[1])
                     + "\"}";
             try {
                 return NetController.sendPut(url, send);
@@ -369,8 +373,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             super.onPostExecute(result);
             System.out.println("GAUTA: " + result);
             if(result == "Error") return;
-            refreshRating(result);
-
+            GetZoneRating rate = new GetZoneRating();
+            rate.execute(currentMarkerId);
         }
     }
 
@@ -380,12 +384,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         RatingBar bar = findViewById(R.id.ratingBarShow);
         TextView numRate = findViewById(R.id.reviewsNum);
+        RatingBar rate = findViewById(R.id.ratingBar);
+        rate.setRating(0);
         float rating = 0;
         if(ratings != null){
             for(Rating r : ratings){
                 rating += r.getRating();
-                if(r.getUserId() == userId){
-                    RatingBar rate = findViewById(R.id.ratingBar);
+                if(r.getUserId().equals(user.getId())){
                     rate.setRating(r.getRating());
                 }
             }

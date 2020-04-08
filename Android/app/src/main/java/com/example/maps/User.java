@@ -1,16 +1,16 @@
 package com.example.maps;
 
 public class User {
-    private String id;
+    private String _id;
     private String email;
 
     public User(String id, String email) {
-        this.id = id;
+        this._id = id;
         this.email = email;
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public String getEmail() {
