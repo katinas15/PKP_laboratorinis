@@ -17,12 +17,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -52,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     RelativeLayout parkavimoZona;
     String userId;
     List<Rating> ratings;
+    String currentMarkerId;
 
 
     @Override
@@ -105,6 +108,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
 
+        LatLng vln = new LatLng(54.694380, 25.302390);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(vln));
+
         colors.put("raudona", Color.argb(100,252, 40, 3));
         colors.put("zalia", Color.argb(100,15, 219, 66));
         colors.put("geltona", Color.argb(100,252, 219, 3));
@@ -152,9 +158,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         kaina.setText(Float.toString(m.getKaina()));
 
 
+                        currentMarkerId = m.getId();
                         GetZoneRating rate = new GetZoneRating();
-                        System.out.println(m.getId());
-                        rate.execute(m.getId());
+                        rate.execute(currentMarkerId);
 
                         parkavimoZona.animate().translationY(0f).alpha(1.0f)
                                 .setDuration(300);
@@ -166,6 +172,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
 
+    }
+
+    public void rate(View v){
+        RatingBar rate = findViewById(R.id.ratingBar);
+        rate.getRating();
+        for(Rating r : ratings){
+            if(r.getUserId() == userId){
+                return;
+            }
+        }
+        PostZoneRating post = new PostZoneRating();
+        post.execute(currentMarkerId, Float.toString(rate.getRating()));
     }
 
     @Override
@@ -278,14 +296,78 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             System.out.println("GAUTA: " + result);
-            Gson gson = new Gson();
+            if(result == "Error") return;
+            refreshRating(result);
+
+        }
+    }
+
+    private final class PostZoneRating extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String url = "/userZone/" + params[0] + "/rate";
+            System.out.println(url);
+            try {
+                String send = "{" +
+                        "\"userId\": \"" + params[1] +
+                        "\"rating\":" + params;
+                return NetController.sendPost(url, send);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            System.out.println("GAUTA: " + result);
             if(result == "Error") return;
 
-            ratings = gson.fromJson(result, new TypeToken<List<Rating>>() {}.getType());
+            refreshRating(result);
 
-            RatingBar bar = findViewById(R.id.ratingBarShow);
-            TextView numRate = findViewById(R.id.reviewsNum);
-            float rating = 0;
+        }
+    }
+
+    private final class PutZoneRating extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(MapsActivity.this, "gaunami zone rating", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String postDataParams = params[0];
+            String url = "/rating/" + postDataParams + "/rate";
+            System.out.println(url);
+            try {
+                return NetController.sendPut(url, postDataParams);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            System.out.println("GAUTA: " + result);
+            if(result == "Error") return;
+            refreshRating(result);
+
+        }
+    }
+
+    private void refreshRating(String result){
+        Gson gson = new Gson();
+        ratings = gson.fromJson(result, new TypeToken<List<Rating>>() {}.getType());
+
+        RatingBar bar = findViewById(R.id.ratingBarShow);
+        TextView numRate = findViewById(R.id.reviewsNum);
+        float rating = 0;
+        if(ratings != null){
             for(Rating r : ratings){
                 rating += r.getRating();
                 if(r.getUserId() == userId){
@@ -295,9 +377,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             rating /= ratings.size();
             numRate.setText("(" + ratings.size() + ")");
-            bar.setRating(rating);
-
         }
+
+        bar.setRating(rating);
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
