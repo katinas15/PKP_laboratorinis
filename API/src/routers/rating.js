@@ -32,8 +32,20 @@ router.get('/userZone/:id/rate', async (req, res) => {
         console.log(e);
         res.status(500).send()
     }
-    
+})
 
+router.put('/rating/:id', async (req, res) => {
+    const _id = req.params.id
+    try {
+        const rating = await Rating.findByIdAndUpdate(_id, req.body, { new: true })
+        if (!rating) {
+            return res.status(404).send()
+        }
+        res.send(rating)
+    } catch (e) {
+        console.log(e);
+        res.status(500).send()
+    }
 })
 
 
