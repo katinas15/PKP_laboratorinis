@@ -125,9 +125,9 @@ public class UnitTests {
     @Test
     public void ChangeZoneRating(){
         String ratingId = "5e8ef31c54a93509f1dd6ce9";
-        String url = "/rating/" + ratingId + "/rate";
+        String url = "/rating/" + ratingId ;
 
-        int rateValue = new Random().nextInt(6);
+        int rateValue = new Random().nextInt(5) + 1;
         String send =
             "{" + "\"rating\":" + rateValue + " }";
 
@@ -145,7 +145,13 @@ public class UnitTests {
         assertTrue(rating.getRating() == rateValue);
     }
 
-
+//test cases
+//create marker
+//        rate marker
+//                zone download
+//                        register
+//    login
+//                                get directions
 
 
 }

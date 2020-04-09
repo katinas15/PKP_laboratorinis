@@ -356,7 +356,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected String doInBackground(String... params) {
-            String url = "/rating/" + params[0] + "/rate";
+            String url = "/rating/" + params[0];
             String send = "{" +
                     "\"rating\": \"" + Float.parseFloat(params[1])
                     + "\"}";
