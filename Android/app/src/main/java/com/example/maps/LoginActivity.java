@@ -41,11 +41,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(register_window);
     }
 
-    private final class UserLogin extends AsyncTask<String, String, String> {
+    final class UserLogin extends AsyncTask<String, String, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(LoginActivity.this, "Logging in...", Toast.LENGTH_SHORT).show();
         }
 
         @Override

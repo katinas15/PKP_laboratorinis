@@ -77,6 +77,7 @@ public class NetController {
     public static String sendPut(String r_url , String postDataParams) throws Exception {
         URL url = new URL(serverIp + r_url);
 
+        System.out.println("PUT - " + postDataParams);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setReadTimeout(20000);
         conn.setConnectTimeout(20000);
