@@ -6,7 +6,7 @@ const BASEURL = "http://openag.pro:3111"
 
 exports['tests'] = function() {
 
-  assert.equal(3 + 2, 5, 'will never pass this since test failed above')
+  assert.equal(2 + 2, 5, 'will never pass this since test failed above')
 }
 
 exports['test login'] = async function() {
