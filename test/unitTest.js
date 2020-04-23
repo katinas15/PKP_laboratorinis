@@ -9,6 +9,8 @@ exports['tests'] = function() {
   assert.equal(2 + 2, 5, 'will never pass this since test failed above')
 }
 
+
+
 exports['test login'] = async function() {
     console.log('login')
     let login = "t@t.lt";
