@@ -17,10 +17,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -218,6 +220,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getMain.execute( Boolean.toString(cbGreen.isChecked()), Boolean.toString(cbYellow.isChecked()), Boolean.toString(cbRed.isChecked()), Boolean.toString(cbBlue.isChecked()));
         GetUserZones getUser = new GetUserZones();
         getUser.execute();
+    }
+
+    public void manageParking(View v){
+        Switch switchP = findViewById(R.id.switchParkavimas);
+        String currentZone = "melyna";
+        String carNum = "LZD125";
+
+        mMap.getMyLocation().getLatitude();
+        mMap.getMyLocation().getLongitude();
+        System.out.println("User loc:" + userLocation);
+        //https://stackoverflow.com/questions/31642449/find-out-if-a-location-is-within-a-shape-drawn-with-polygon-on-google-maps-v2/31642731
+
+        SmsManager smsManager = SmsManager.getDefault();
+        if (switchP.isChecked()){
+//            smsManager.sendTextMessage("1332", null, "Start " + currentZone + " " + carNum, null, null);
+            try{
+                smsManager.sendTextMessage("+1-555-521-5554", null, "Start " + currentZone.toUpperCase() + " " + carNum, null, null);
+            }
+            catch (Exception e){
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+        }
+        else{
+//            smsManager.sendTextMessage("1332", null, "STOP", null, null);
+            smsManager.sendTextMessage("+1-555-521-5554", null, "STOP", null, null);
+        }
     }
 
     @Override

@@ -3,14 +3,14 @@ package com.example.maps.Objects;
 public class Reserved {
     private String userID;
     private String unofZoneID;
-    private String timestamp;
-    private String timeElapsed;
+    private String timeStart;
+    private String timeEnd;
 
-    public Reserved(String userID, String unofZoneID, String timestamp, String timeElapsed){
+    public Reserved(String userID, String unofZoneID, String timeStart, String timeEnd){
         this.userID = userID;
         this.unofZoneID = unofZoneID;
-        this.timestamp = timestamp;
-        this.timeElapsed = timeElapsed;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
     }
 
     public String getUserID() {
@@ -29,19 +29,19 @@ public class Reserved {
         this.unofZoneID = unofZoneID;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public String getTimeStart() {
+        return timeStart;
     }
 
-    public void setTimeStampt(String timestamp) {
-        this.timestamp = timestamp;
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
     }
 
-    public String getTimeElapsed() {
-        return timeElapsed;
+    public String getTimeEnd() {
+        return timeEnd;
     }
 
-    public void setTimeElapsed(String timeElapsed) {
-        this.timeElapsed = timeElapsed;
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
     }
 }
