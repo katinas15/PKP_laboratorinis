@@ -1,6 +1,6 @@
-package com.example.maps;
+package com.example.maps.Objects;
 
-import java.util.List;
+import com.example.maps.Objects.Coords;
 
 public class UserMarker {
     private String _id;

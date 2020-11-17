@@ -1,4 +1,4 @@
-package com.example.maps;
+package com.example.maps.Activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -18,12 +18,19 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.CheckBox;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maps.Controllers.NetController;
+import com.example.maps.Objects.Coords;
+import com.example.maps.Objects.Rating;
+import com.example.maps.Objects.User;
+import com.example.maps.Objects.Zone;
+import com.example.maps.R;
+import com.example.maps.Objects.UserMarker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -88,7 +95,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         parkavimoZona = (RelativeLayout)findViewById(R.id.parkavimoZona);
-        System.out.println(parkavimoZona);
         parkavimoZona.animate().translationY(parkavimoZona.getHeight()).alpha(0.0f)
                 .setDuration(300);
 
@@ -103,14 +109,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     }
                 });
-                Toast.makeText(MapsActivity.this, "rodomas location", Toast.LENGTH_LONG).show();
+                Toast.makeText(MapsActivity.this, "Showing location", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(MapsActivity.this, "returned", Toast.LENGTH_LONG).show();
+            Toast.makeText(MapsActivity.this, "Returned", Toast.LENGTH_LONG).show();
             return;
         }
 
-        LatLng vln = new LatLng(54.694380, 25.302390);
+        LatLng vln = new LatLng(54.694380, 25.302390); // Vilniaus koord
         mMap.moveCamera(CameraUpdateFactory.newLatLng(vln));
 
         colors.put("raudona", Color.argb(100,252, 40, 3));
@@ -118,8 +124,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         colors.put("geltona", Color.argb(100,252, 219, 3));
         colors.put("melyna", Color.argb(100,3, 119, 252));
 
+        CheckBox cbGreen = findViewById(R.id.cbZaliaZona);
+        CheckBox cbYellow = findViewById(R.id.cbGeltonaZona);
+        CheckBox cbRed = findViewById(R.id.cbRaudonaZona);
+        CheckBox cbBlue = findViewById(R.id.cbMelynaZona);
         GetMainZones getMain = new GetMainZones();
-        getMain.execute();
+        getMain.execute(Boolean.toString(cbGreen.isChecked()), Boolean.toString(cbYellow.isChecked()), Boolean.toString(cbRed.isChecked()), Boolean.toString(cbBlue.isChecked()));
 
         GetUserZones getUser = new GetUserZones();
         getUser.execute();
@@ -129,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                Intent intent = new Intent(MapsActivity.this, create_zone.class);
+                Intent intent = new Intent(MapsActivity.this, CreateZoneActivity.class);
                 intent.putExtra("x", latLng.latitude);
                 intent.putExtra("y", latLng.longitude);
                 startActivity(intent);
@@ -158,7 +168,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         pav.setText(m.getName());
                         apr.setText(m.getDescription());
                         laikas.setText(m.getTimeStart() + ":" + m.getTimeEnd());
-                        kaina.setText(Float.toString(m.getKaina()));
+                        kaina.setText("Kaina: " + Float.toString(m.getKaina()));
 
 
                         currentMarkerId = m.getId();
@@ -198,6 +208,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    public void filterOfficialZones(View v){
+
+        CheckBox cbGreen = findViewById(R.id.cbZaliaZona);
+        CheckBox cbYellow = findViewById(R.id.cbGeltonaZona);
+        CheckBox cbRed = findViewById(R.id.cbRaudonaZona);
+        CheckBox cbBlue = findViewById(R.id.cbMelynaZona);
+        GetMainZones getMain = new GetMainZones();
+        getMain.execute( Boolean.toString(cbGreen.isChecked()), Boolean.toString(cbYellow.isChecked()), Boolean.toString(cbRed.isChecked()), Boolean.toString(cbBlue.isChecked()));
+        GetUserZones getUser = new GetUserZones();
+        getUser.execute();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -215,7 +237,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         protected String doInBackground(String... strings) {
-            String url = "/mainZone";
+            String url = "/mainZone?";
+            url += "zalia=" + strings[0];
+            url += "&geltona=" + strings[1];
+            url += "&raudona=" + strings[2];
+            url += "&melyna=" + strings[3];
             try {
                 return NetController.sendGet(url);
             } catch (Exception e) {
@@ -236,6 +262,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }.getType());
 
             try {
+                mMap.clear();
                 for (Zone zone : zones) {
                     PolygonOptions rectangle = new PolygonOptions();
                     for (Coords coords : zone.getBounds()) {

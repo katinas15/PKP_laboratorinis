@@ -1,4 +1,6 @@
-package com.example.maps;
+package com.example.maps.Objects;
+
+import com.example.maps.Objects.Coords;
 
 import java.util.List;
 

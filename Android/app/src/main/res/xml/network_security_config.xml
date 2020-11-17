@@ -7,5 +7,6 @@
         <domain includeSubdomains="true">94.237.116.12:3111</domain>
         <domain includeSubdomains="true">localhost:3000</domain>
         <domain includeSubdomains="true">192.168.0.105</domain>
+        <domain includeSubdomains="true">https://kompleksinis-projektas.herokuapp.com</domain>
     </domain-config>
 </network-security-config>

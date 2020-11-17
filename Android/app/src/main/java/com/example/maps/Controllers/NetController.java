@@ -1,4 +1,4 @@
-package com.example.maps;
+package com.example.maps.Controllers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,7 +12,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 public class NetController {
-    public static String serverIp = "http://openag.pro:3111";
+    public static String serverIp = "https://kompleksinis-projektas.herokuapp.com";
 //    public static String serverIp = "http://192.168.0.105:3000";
 
     public static String sendPost(String r_url , String postDataParams) throws Exception {
@@ -29,14 +29,20 @@ public class NetController {
         conn.setDoInput(true);
         conn.setDoOutput(true);
 
-        OutputStream os = conn.getOutputStream();
-        BufferedWriter writer = new BufferedWriter( new OutputStreamWriter(os, "UTF-8"));
-        writer.write(postDataParams);
-        writer.flush();
-        writer.close();
-        os.close();
+        int responseCode;
+        try {
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter( new OutputStreamWriter(os, "UTF-8"));
+            writer.write(postDataParams);
+            writer.flush();
+            writer.close();
+            os.close();
+            responseCode = conn.getResponseCode();
+        }
+        catch (Exception e){
+            return "Server error";
+        }
 
-        int responseCode=conn.getResponseCode(); // To Check for 200
         if (responseCode == HttpsURLConnection.HTTP_OK)
         {
             BufferedReader in=new BufferedReader( new InputStreamReader(conn.getInputStream()));
@@ -53,14 +59,20 @@ public class NetController {
     }
     public static String sendGet(String url) throws IOException {
         URL obj = new URL(serverIp + url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setReadTimeout(20000);
-        con.setConnectTimeout(20000);
-        con.setRequestMethod("GET");
-        int responseCode = con.getResponseCode();
-        System.out.println("Response Code :: " + responseCode);
+        HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+        conn.setReadTimeout(20000);
+        conn.setConnectTimeout(20000);
+        conn.setRequestMethod("GET");
+        int responseCode;
+        try {
+            responseCode = conn.getResponseCode();
+        }
+        catch (Exception e){
+            return "Server error";
+        }
+        System.out.println("Response Code :" + responseCode);
         if (responseCode == HttpURLConnection.HTTP_OK) { // connection ok
-            BufferedReader in = new BufferedReader(new InputStreamReader( con.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
 
@@ -87,14 +99,20 @@ public class NetController {
         conn.setDoInput(true);
         conn.setDoOutput(true);
 
-        OutputStream os = conn.getOutputStream();
-        BufferedWriter writer = new BufferedWriter( new OutputStreamWriter(os, "UTF-8"));
-        writer.write(postDataParams);
-        writer.flush();
-        writer.close();
-        os.close();
+        int responseCode;
+        try {
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter( new OutputStreamWriter(os, "UTF-8"));
+            writer.write(postDataParams);
+            writer.flush();
+            writer.close();
+            os.close();
+            responseCode = conn.getResponseCode();
+        }
+        catch (Exception e){
+            return "Server error";
+        }
 
-        int responseCode=conn.getResponseCode(); // To Check for 200
         if (responseCode == HttpsURLConnection.HTTP_OK)
         {
             BufferedReader in=new BufferedReader( new InputStreamReader(conn.getInputStream()));
@@ -122,14 +140,19 @@ public class NetController {
         conn.setDoInput(true);
         conn.setDoOutput(true);
 
-        OutputStream os = conn.getOutputStream();
-        BufferedWriter writer = new BufferedWriter( new OutputStreamWriter(os, "UTF-8"));
-        writer.write(postDataParams);
-        writer.flush();
-        writer.close();
-        os.close();
-
-        int responseCode=conn.getResponseCode(); // To Check for 200
+        int responseCode;
+        try {
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter( new OutputStreamWriter(os, "UTF-8"));
+            writer.write(postDataParams);
+            writer.flush();
+            writer.close();
+            os.close();
+            responseCode = conn.getResponseCode();
+        }
+        catch (Exception e){
+            return "Server error";
+        }
         if (responseCode == HttpsURLConnection.HTTP_OK)
         {
             BufferedReader in=new BufferedReader( new InputStreamReader(conn.getInputStream()));

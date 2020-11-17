@@ -1,4 +1,8 @@
-package com.example.maps;
+package com.example.maps.Tests;
+import com.example.maps.Controllers.NetController;
+import com.example.maps.Objects.Rating;
+import com.example.maps.Objects.Zone;
+import com.example.maps.Objects.UserMarker;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;

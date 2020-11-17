@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".create_zone"
+            android:name=".Activities.CreateZoneActivity"
             android:label="@string/title_activity_create_zone"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--
@@ -33,11 +33,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".Activities.RegisterActivity" />
+        <activity android:name=".Activities.LoginActivity" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Activities.MapsActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

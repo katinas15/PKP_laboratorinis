@@ -1,4 +1,4 @@
-package com.example.maps;
+package com.example.maps.Objects;
 
 public class User {
     private String _id;

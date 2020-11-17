@@ -1,4 +1,4 @@
-package com.example.maps;
+package com.example.maps.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,13 +9,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.maps.Controllers.NetController;
+import com.example.maps.Objects.User;
 import com.example.maps.R;
-import com.example.maps.NetController;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import java.io.Serializable;
-import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -26,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     }
 
-    public void prisijungi(View v) {
+    public void prisijungti(View v) {
         EditText log = findViewById(R.id.l_login);
         EditText pas = findViewById(R.id.l_pass);
         String login = log.getText().toString();

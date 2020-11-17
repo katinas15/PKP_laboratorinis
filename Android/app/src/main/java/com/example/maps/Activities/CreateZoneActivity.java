@@ -1,4 +1,4 @@
-package com.example.maps;
+package com.example.maps.Activities;
 
 import android.os.Bundle;
 
@@ -11,7 +11,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class create_zone extends AppCompatActivity {
+import com.example.maps.Controllers.NetController;
+import com.example.maps.R;
+
+public class CreateZoneActivity extends AppCompatActivity {
     double x;
     double y;
     @Override
@@ -75,7 +78,7 @@ public class create_zone extends AppCompatActivity {
         EditText iki = findViewById(R.id.ikiInput);
         EditText kaina = findViewById(R.id.kainaOver);
         if(pav.getText().toString().length() < 3 || nuo.getText().toString().length() < 5 || iki.getText().toString().length() < 5 || nuo.getText().toString().length() < 1){
-            Toast.makeText(create_zone.this, "Pilnai užpildykite visus laukus", Toast.LENGTH_LONG).show();
+            Toast.makeText(CreateZoneActivity.this, "Pilnai užpildykite visus laukus", Toast.LENGTH_LONG).show();
         }
         else{
             String send;
@@ -101,7 +104,7 @@ public class create_zone extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(create_zone.this, "Creating zone...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CreateZoneActivity.this, "Creating zone...", Toast.LENGTH_SHORT).show();
         }
 
         @Override

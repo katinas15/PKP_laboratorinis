@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="t@t.lt" />
+        android:text="ttt@gmail.com" />
 
     <EditText
         android:id="@+id/l_pass"
@@ -21,13 +21,13 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="testtest" />
+        android:text="ttt123456" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="prisijungi"
+        android:onClick="prisijungti"
         android:text="Login" />
 
     <Button

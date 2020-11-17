@@ -1,4 +1,4 @@
-package com.example.maps;
+package com.example.maps.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +11,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.maps.Controllers.NetController;
 import com.example.maps.R;
-import com.example.maps.NetController;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -32,8 +32,11 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        if(log.getText().toString().length() < 3 || pass.getText().toString().length() < 8){
-            Toast.makeText(RegisterActivity.this, "Login and password have to be at least 3 characters", Toast.LENGTH_LONG).show();
+        if(log.getText().toString().length() < 3){
+            Toast.makeText(RegisterActivity.this, "Login has to be at least 3 characters", Toast.LENGTH_LONG).show();
+        }
+        else if(pass.getText().toString().length() < 8){
+            Toast.makeText(RegisterActivity.this, "Password has to be at least 8 characters", Toast.LENGTH_LONG).show();
         }
         else{
             String send;

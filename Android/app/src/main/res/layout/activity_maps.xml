@@ -10,7 +10,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MapsActivity" />
+        tools:context=".Activities.MapsActivity" />
 
     <RelativeLayout
         android:id="@+id/parkavimoZona"
@@ -30,6 +30,19 @@
         android:layout_marginBottom="-5dp"
         android:animateLayoutChanges="true"
         android:background="#FFFFFF">
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_below="@+id/ratingBar"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="48dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="11dp"
+            android:onClick="rate"
+            android:text="Rezervuoti" />
 
         <ImageView
             android:id="@+id/nuotrauka"
@@ -164,13 +177,88 @@
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_below="@+id/ratingBar"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="109dp"
-            android:layout_marginLeft="109dp"
-            android:layout_marginTop="5dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginRight="48dp"
+            android:layout_toEndOf="@+id/button5"
+            android:layout_toRightOf="@+id/button5"
             android:onClick="rate"
             android:text="Įvertinti" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/filterParkavimoZonos"
+        android:layout_width="wrap_content"
+        android:layout_height="234dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="26dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="237dp"
+        android:layout_marginRight="237dp"
+        android:layout_marginBottom="459dp"
+        android:animateLayoutChanges="true"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cbAiksteles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="#8a8881"
+                android:checked="true"
+                android:text="Aikštelės" />
+
+            <CheckBox
+                android:id="@+id/cbZaliaZona"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="#0fdb42"
+                android:checked="true"
+                android:onClick="filterOfficialZones"
+                android:text="Žalia zona" />
+
+            <CheckBox
+                android:id="@+id/cbGeltonaZona"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="#fcdb03"
+                android:checked="true"
+                android:onClick="filterOfficialZones"
+                android:text="Geltona zona" />
+
+            <CheckBox
+                android:id="@+id/cbRaudonaZona"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="#fc2803"
+                android:checked="true"
+                android:onClick="filterOfficialZones"
+                android:text="Raudona zona" />
+
+            <CheckBox
+                android:id="@+id/cbMelynaZona"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="#0377fc"
+                android:checked="true"
+                android:onClick="filterOfficialZones"
+                android:text="Mėlyna zona" />
+        </LinearLayout>
 
     </RelativeLayout>
 
