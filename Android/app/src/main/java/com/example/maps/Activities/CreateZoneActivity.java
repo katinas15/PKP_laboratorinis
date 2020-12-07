@@ -70,7 +70,6 @@ public class CreateZoneActivity extends AppCompatActivity {
     }
 
     public void issaugotiZona(View v){
-        String userId = "1";
 
         EditText pav = findViewById(R.id.pavadinimasOver);
         EditText apr = findViewById(R.id.aprasymasOver);
@@ -90,7 +89,7 @@ public class CreateZoneActivity extends AppCompatActivity {
                     "}," +
                     " \"description\":\"" + apr.getText().toString() + "\", \"timeStart\": \"" + nuo.getText().toString()
                         + "\", \"timeEnd\":\"" + iki.getText().toString() + "\", \"image\": \"empty\"," +
-                    "\"userId\":\"" + userId + "\"," +
+                    "\"userId\":\"" + MapsActivity.user.getId() + "\"," +
                     "\"kaina\":\"" + kaina.getText().toString() + "\"" +
                     "}" ;
 

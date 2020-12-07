@@ -5,8 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.Context;
@@ -22,14 +20,11 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -135,6 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                         if(zones != null) {
                             if (currentZone == null) setCurrentZone();
+                            if (currentZone == null) return;
                             String oldColor = currentZone.getColor();
                             setCurrentZone();
                             if (currentZone.getColor() != oldColor) {
@@ -570,5 +566,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void reservation(View v){
+        Intent reservationIntent = new Intent(MapsActivity.this, ReservationActivity.class);
+        reservationIntent.putExtra("id",currentMarkerId);
+        startActivity(reservationIntent);
     }
 }
