@@ -4,6 +4,7 @@ import com.example.maps.Objects.Coords;
 
 public class UserMarker {
     private String _id;
+    private String userId;
     private String name;
     private Coords point;
     private String description;
@@ -12,7 +13,7 @@ public class UserMarker {
     private String image;
     private float kaina;
 
-    public UserMarker(String id, String name, Coords point, String description, String timeStart, String timeEnd, String image, float kaina) {
+    public UserMarker(String id, String name, Coords point, String description, String timeStart, String timeEnd, String image, String userId, float kaina) {
         this._id = id;
         this.name = name;
         this.point = point;
@@ -20,6 +21,7 @@ public class UserMarker {
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.image = image;
+        this.userId = userId;
         this.kaina = kaina;
     }
 
@@ -53,5 +55,13 @@ public class UserMarker {
 
     public String getImage() {
         return image;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 }

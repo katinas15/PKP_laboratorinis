@@ -17,6 +17,15 @@ import com.example.maps.R;
 public class CreateZoneActivity extends AppCompatActivity {
     double x;
     double y;
+    boolean isNew;
+    String zoneId;
+
+    EditText pav;
+    EditText apr;
+    EditText nuo;
+    EditText iki;
+    EditText kaina;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +33,41 @@ public class CreateZoneActivity extends AppCompatActivity {
         Intent dabar = this.getIntent();
         x = (double)dabar.getSerializableExtra("x");
         y = (double)dabar.getSerializableExtra("y");
+        isNew = (boolean)dabar.getSerializableExtra("isNew");
+
+        pav = findViewById(R.id.pavadinimasOver);
+        apr = findViewById(R.id.aprasymasOver);
+        nuo = findViewById(R.id.nuoInput);
+        iki = findViewById(R.id.ikiInput);
+        kaina = findViewById(R.id.kainaOver);
+
+        if(!isNew){
+            pav.setText(MapsActivity.currentUserMarker.getName());
+            apr.setText(MapsActivity.currentUserMarker.getDescription());
+            nuo.setText(MapsActivity.currentUserMarker.getTimeStart());
+            iki.setText(MapsActivity.currentUserMarker.getTimeEnd());
+            if((int)MapsActivity.currentUserMarker.getKaina() == 0){
+                kaina.setFocusable(false);
+                kaina.setFocusableInTouchMode(false);
+                kaina.setClickable(false);
+                kaina.setText("0");
+                CheckBox checkBox = findViewById(R.id.nemokama);
+                checkBox.setChecked(true);
+            }
+            else{
+                kaina.setText(Float.toString(MapsActivity.currentUserMarker.getKaina()));
+            }
+            if(MapsActivity.currentUserMarker.getTimeStart().equals("00:00") && MapsActivity.currentUserMarker.getTimeEnd().equals("23:59")){
+                iki.setFocusable(false);
+                iki.setFocusableInTouchMode(false);
+                iki.setClickable(false);
+                nuo.setFocusable(false);
+                nuo.setFocusableInTouchMode(false);
+                nuo.setClickable(false);
+                CheckBox checkBox2 = findViewById(R.id.visaPara);
+                checkBox2.setChecked(true);
+            }
+        }
     }
 
     public void visaParaChange(View v){
@@ -71,11 +115,6 @@ public class CreateZoneActivity extends AppCompatActivity {
 
     public void issaugotiZona(View v){
 
-        EditText pav = findViewById(R.id.pavadinimasOver);
-        EditText apr = findViewById(R.id.aprasymasOver);
-        EditText nuo = findViewById(R.id.nuoInput);
-        EditText iki = findViewById(R.id.ikiInput);
-        EditText kaina = findViewById(R.id.kainaOver);
         if(pav.getText().toString().length() < 3 || nuo.getText().toString().length() < 5 || iki.getText().toString().length() < 5 || nuo.getText().toString().length() < 1){
             Toast.makeText(CreateZoneActivity.this, "Pilnai užpildykite visus laukus", Toast.LENGTH_LONG).show();
         }
@@ -94,8 +133,14 @@ public class CreateZoneActivity extends AppCompatActivity {
                     "}" ;
 
 
-            UserZoneRegister reg = new UserZoneRegister();
-            reg.execute(send);
+            if(isNew) {
+                UserZoneRegister reg = new UserZoneRegister();
+                reg.execute(send);
+            }
+            else{
+                UserZoneUpdate upd = new UserZoneUpdate();
+                upd.execute(MapsActivity.currentUserMarker.get_id(), send);
+            }
         }
     }
 
@@ -113,6 +158,34 @@ public class CreateZoneActivity extends AppCompatActivity {
             System.out.println("ISSIUSTA: " + postDataParams);
             try {
                 return NetController.sendPost(url, postDataParams);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error! Unable to retrieve data from database!";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            System.out.println("GAUTA: " + result);
+            finish();
+        }
+    }
+
+    private final class UserZoneUpdate extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(CreateZoneActivity.this, "Updating zone...", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String url = "/userZone/" + params[0];
+            String postDataParams = params[1];
+            System.out.println("ISSIUSTA: " + postDataParams);
+            try {
+                return NetController.sendPut(url, postDataParams);
             } catch (Exception e) {
                 e.printStackTrace();
                 return "Error! Unable to retrieve data from database!";

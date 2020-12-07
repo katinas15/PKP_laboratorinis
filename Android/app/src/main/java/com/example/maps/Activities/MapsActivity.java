@@ -68,6 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static User user;
     List<Rating> ratings;
     String currentMarkerId;
+    static UserMarker currentUserMarker;
     static Zone currentZone;
 
 
@@ -190,6 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Intent intent = new Intent(MapsActivity.this, CreateZoneActivity.class);
                 intent.putExtra("x", latLng.latitude);
                 intent.putExtra("y", latLng.longitude);
+                intent.putExtra("isNew", true);
                 startActivity(intent);
             }
         });
@@ -220,11 +222,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                         currentMarkerId = m.getId();
+                        currentUserMarker = m;
+                        System.out.println("From zone: " + m.getUserId());
+                        System.out.println("From User: " + user.getId());
+                        System.out.println("-----");
+                        if(m.getUserId().equals(user.getId())){
+                            findViewById(R.id.buttonEditUserZone).setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            findViewById(R.id.buttonEditUserZone).setVisibility(View.INVISIBLE);
+                        }
                         GetZoneRating rate = new GetZoneRating();
                         rate.execute(currentMarkerId);
 
                         parkavimoZona.animate().translationY(0f).alpha(1.0f)
                                 .setDuration(300);
+                        break;
                     }
                 }
 
@@ -234,6 +247,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
+
+    public void editUserZone(View v){
+        Intent intent = new Intent(MapsActivity.this, CreateZoneActivity.class);
+        intent.putExtra("x", currentUserMarker.getPoint().getX());
+        intent.putExtra("y", currentUserMarker.getPoint().getY());
+        intent.putExtra("isNew", false);
+        startActivity(intent);
+    }
+
 
     public void pressParking(View v){
         Intent intent = new Intent(MapsActivity.this, ParkingSettings.class);

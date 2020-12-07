@@ -255,6 +255,29 @@
                 android:onClick="rate"
                 android:text="Įvertinti" />
 
+            <Button
+                android:id="@+id/buttonEditUserZone"
+                android:layout_width="45dp"
+                android:layout_height="33dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="256dp"
+                android:layout_marginLeft="256dp"
+                android:layout_marginTop="131dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginRight="13dp"
+                android:layout_marginBottom="253dp"
+                android:background="@android:color/white"
+                android:drawableTop="@android:drawable/ic_menu_edit"
+                android:drawableTint="#020388"
+                android:onClick="editUserZone" />
+
+            android:visibility="visible" />
+
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
