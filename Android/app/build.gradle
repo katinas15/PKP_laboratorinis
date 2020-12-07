@@ -34,5 +34,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.2.1'
     implementation 'androidx.navigation:navigation-ui:2.2.1'
     implementation 'junit:junit:4.12'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 }

@@ -1,25 +1,32 @@
 package com.example.maps.Activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -28,6 +35,7 @@ import android.widget.Toast;
 
 import com.example.maps.Controllers.NetController;
 import com.example.maps.Objects.Coords;
+import com.example.maps.Objects.PolyUtil;
 import com.example.maps.Objects.Rating;
 import com.example.maps.Objects.User;
 import com.example.maps.Objects.Zone;
@@ -44,14 +52,15 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-    List<Zone> zones;
+    static GoogleMap mMap;
+    static List<Zone> zones;
     List<UserMarker> markers;
     Map<String, Integer> colors = new HashMap<String, Integer>();
 
@@ -61,9 +70,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LatLng clickLocation;
     String provider;
     RelativeLayout parkavimoZona;
-    User user;
+    static User user;
     List<Rating> ratings;
     String currentMarkerId;
+    static Zone currentZone;
+
 
 
     @Override
@@ -94,6 +105,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    public void setCurrentZone(){
+        for (Zone z : MapsActivity.zones){
+            List<LatLng> points = new ArrayList<>();
+            for (Coords c : z.getBounds()){
+                points.add(new LatLng(c.getX(), c.getY()));
+            }
+            if(PolyUtil.containsLocation(MapsActivity.userLocation, points, true)){
+                currentZone = z;
+                break;
+            }
+        }
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         parkavimoZona = (RelativeLayout)findViewById(R.id.parkavimoZona);
@@ -109,6 +133,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onMyLocationChange(Location location) {
                         userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        if(zones != null) {
+                            if (currentZone == null) setCurrentZone();
+                            String oldColor = currentZone.getColor();
+                            setCurrentZone();
+                            if (currentZone.getColor() != oldColor) {
+                                TextView tv = findViewById(R.id.textViewZonePrice);
+                                String kaina;
+                                switch (currentZone.getColor()) {
+                                    case "zalia":
+                                        kaina = "0.3€";
+                                        break;
+                                    case "geltona":
+                                        kaina = "0.6€";
+                                        break;
+                                    case "raudona":
+                                        kaina = "1.5€";
+                                        break;
+                                    case "melyna":
+                                        kaina = "2.5€";
+                                        break;
+                                    default:
+                                        kaina = "0.0€";
+                                }
+                                tv.setText("Kaina: " + kaina);
+                            }
+                        }
                     }
                 });
                 Toast.makeText(MapsActivity.this, "Showing location", Toast.LENGTH_LONG).show();
@@ -189,6 +239,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    public void pressParking(View v){
+        Intent intent = new Intent(MapsActivity.this, ParkingSettings.class);
+        startActivity(intent);
+    }
+
 
     public void rate(View v){
         RatingBar rate = findViewById(R.id.ratingBar);
@@ -222,29 +277,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getUser.execute();
     }
 
-    public void manageParking(View v){
-        Switch switchP = findViewById(R.id.switchParkavimas);
-        String currentZone = "melyna";
-        String carNum = "LZD125";
-
-        mMap.getMyLocation().getLatitude();
-        mMap.getMyLocation().getLongitude();
-        System.out.println("User loc:" + userLocation);
-        //https://stackoverflow.com/questions/31642449/find-out-if-a-location-is-within-a-shape-drawn-with-polygon-on-google-maps-v2/31642731
-
-        SmsManager smsManager = SmsManager.getDefault();
-        if (switchP.isChecked()){
-//            smsManager.sendTextMessage("1332", null, "Start " + currentZone + " " + carNum, null, null);
-            try{
-                smsManager.sendTextMessage("+1-555-521-5554", null, "Start " + currentZone.toUpperCase() + " " + carNum, null, null);
-            }
-            catch (Exception e){
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_LOCATION);
-            }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void changeFilterVisibility(View v){
+        Button ib = findViewById(R.id.buttonFilters);
+        RelativeLayout rl = findViewById(R.id.filterParkavimoZonos);
+        if (rl.getVisibility() == View.VISIBLE){
+            rl.setVisibility(View.INVISIBLE);
+            ib.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#7B7B80")));
         }
-        else{
-//            smsManager.sendTextMessage("1332", null, "STOP", null, null);
-            smsManager.sendTextMessage("+1-555-521-5554", null, "STOP", null, null);
+        else {
+            rl.setVisibility(View.VISIBLE);
+            ib.setCompoundDrawableTintList(ColorStateList.valueOf(Color.parseColor("#020388")));
         }
     }
 
@@ -292,14 +335,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 mMap.clear();
                 for (Zone zone : zones) {
-                    PolygonOptions rectangle = new PolygonOptions();
+                    PolygonOptions poly = new PolygonOptions();
                     for (Coords coords : zone.getBounds()) {
-                        rectangle.add(new LatLng(coords.getX(), coords.getY()));
+                        poly.add(new LatLng(coords.getX(), coords.getY()));
                     }
-                    rectangle.strokeColor(colors.get(zone.getColor()));
-                    rectangle.fillColor(colors.get(zone.getColor()));
+                    poly.strokeColor(colors.get(zone.getColor()));
+                    poly.fillColor(colors.get(zone.getColor()));
 
-                    mMap.addPolygon(rectangle);
+                    mMap.addPolygon(poly);
                 }
             }
             catch (Exception e){
@@ -312,7 +355,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(MapsActivity.this, "Siunčiami marker duomenys", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MapsActivity.this, "Siunčiami marker duomenys", Toast.LENGTH_SHORT).show();
         }
 
         @Override

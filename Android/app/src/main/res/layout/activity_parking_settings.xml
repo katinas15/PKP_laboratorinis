@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.ParkingSettings">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MAŠINOS NUMERIS" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <EditText
+                android:id="@+id/editTextCarNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="ABC123"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:id="@+id/buttonSaveCarNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="saveNumber"
+                android:text="Išsaugoti" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Switch
+                android:id="@+id/switchParkavimas"
+                android:layout_width="wrap_content"
+                android:layout_height="33dp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@android:color/white"
+                android:onClick="manageParking"
+                android:text="Įjungti / Išjungti" />
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/buttonSelectionMap"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:drawableTop="@android:drawable/ic_dialog_map"
+            android:drawableTint="#7B7B80"
+            android:onClick="pressMaps"
+            android:text="Žemėlapis" />
+
+        <Button
+            android:id="@+id/buttonSelectionOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:drawableTop="@android:drawable/ic_menu_manage"
+            android:drawableTint="#020388"
+            android:text="PARKAVIMAS" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,180 +12,252 @@
         android:layout_height="match_parent"
         tools:context=".Activities.MapsActivity" />
 
-    <RelativeLayout
-        android:id="@+id/parkavimoZona"
-        android:layout_width="314dp"
-        android:layout_height="417dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="14dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="322dp"
-        android:layout_marginEnd="95dp"
-        android:layout_marginRight="95dp"
-        android:layout_marginBottom="-5dp"
-        android:animateLayoutChanges="true"
-        android:background="#FFFFFF">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_below="@+id/ratingBar"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="34dp"
-            android:layout_marginLeft="34dp"
-            android:layout_marginTop="12dp"
-            android:onClick="rate"
-            android:text="Rezervuoti" />
+            android:id="@+id/buttonFilters"
+            android:layout_width="96dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@android:color/white"
+            android:drawableLeft="@android:drawable/ic_menu_sort_by_size"
+            android:drawableTint="#020388"
+            android:onClick="changeFilterVisibility"
+            android:text="Zonos"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.0"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintVertical_bias="0.075" />
 
-        <ImageView
-            android:id="@+id/nuotrauka"
+        <TextView
+            android:id="@+id/textViewZonePrice"
+            android:layout_width="96dp"
+            android:layout_height="33dp"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@android:color/white"
+            android:text="TextView"
+            android:gravity="center"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.403"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintVertical_bias="0.074" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="121dp"
-            android:background="#000000"
-            android:src="@drawable/image"
-            map:srcCompat="@drawable/image" />
+            android:layout_height="60dp"
+            android:background="#FFFFFF"
+            android:orientation="horizontal"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.0"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintVertical_bias="1.0">
 
-        <TextView
-            android:id="@+id/pavadinimasOver"
-            android:layout_width="209dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/nuotrauka"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="26dp"
-            android:layout_marginLeft="26dp"
-            android:layout_marginTop="6dp"
-            android:text="Parkavimosi vieta"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#000000"
-            android:textSize="18sp" />
+            <Button
+                android:id="@+id/buttonSelectionMap"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:drawableTop="@android:drawable/ic_dialog_map"
+                android:drawableTint="#020388"
+                android:text="Žemėlapis" />
 
-        <TextView
-            android:id="@+id/kainaOver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pavadinimasOver"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/reviewsNum"
-            android:layout_toRightOf="@+id/reviewsNum"
-            android:text="nemokama"
-            android:textSize="12sp" />
+            <Button
+                android:id="@+id/buttonSelectionOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:drawableTop="@android:drawable/ic_menu_manage"
+                android:drawableTint="#7B7B80"
+                android:onClick="pressParking"
+                android:text="PARKAVIMAS" />
+        </LinearLayout>
 
-        <RatingBar
-            android:id="@+id/ratingBarShow"
-            style="@style/Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pavadinimasOver"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="27dp"
-            android:layout_marginLeft="27dp"
-            android:layout_marginTop="10dp"
-            android:clickable="false"
-            android:focusable="auto"
-            android:longClickable="false"
-            android:numStars="5"
-            android:stepSize=".5" />
+        <RelativeLayout
+            android:id="@+id/parkavimoZona"
+            android:layout_width="314dp"
+            android:layout_height="417dp"
+            android:layout_marginBottom="5dp"
+            android:animateLayoutChanges="true"
+            android:background="#FFFFFF"
+            map:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            map:layout_constraintEnd_toEndOf="parent"
+            map:layout_constraintHorizontal_bias="0.0"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toTopOf="parent"
+            map:layout_constraintVertical_bias="1.0">
 
-        <TextView
-            android:id="@+id/reviewsNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pavadinimasOver"
-            android:layout_marginStart="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/ratingBarShow"
-            android:layout_toRightOf="@+id/ratingBarShow"
-            android:text="(3)"
-            android:textSize="12sp" />
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ratingBar"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="34dp"
+                android:layout_marginLeft="34dp"
+                android:layout_marginTop="12dp"
+                android:onClick="rate"
+                android:text="Rezervuoti" />
 
-        <TextView
-            android:id="@+id/laikasOver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ratingBarShow"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="29dp"
-            android:layout_marginLeft="29dp"
-            android:layout_marginTop="6dp"
-            android:text="Visą parą"
-            android:textSize="12sp" />
+            <ImageView
+                android:id="@+id/nuotrauka"
+                android:layout_width="match_parent"
+                android:layout_height="121dp"
+                android:background="#000000"
+                android:src="@drawable/image"
+                map:srcCompat="@drawable/image" />
 
-        <TextView
-            android:id="@+id/aprasymasOver"
-            android:layout_width="231dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/laikasOver"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="29dp"
-            android:layout_marginLeft="29dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="54dp"
-            android:layout_marginRight="54dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum faucibus, massa at imperdiet iaculis, orci purus pulvinar nulla, quis tincidunt dui diam porta turpis."
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/pavadinimasOver"
+                android:layout_width="209dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nuotrauka"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="26dp"
+                android:layout_marginLeft="26dp"
+                android:layout_marginTop="6dp"
+                android:text="Parkavimosi vieta"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
-        <View
-            android:id="@+id/linija"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_below="@+id/aprasymasOver"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="98dp"
-            android:layout_marginLeft="98dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="95dp"
-            android:layout_marginRight="95dp"
-            android:background="@android:color/darker_gray"
-            android:foregroundGravity="center" />
+            <TextView
+                android:id="@+id/kainaOver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pavadinimasOver"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/reviewsNum"
+                android:layout_toRightOf="@+id/reviewsNum"
+                android:text="nemokama"
+                android:textSize="12sp" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:layout_below="@+id/linija"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginRight="28dp" />
+            <RatingBar
+                android:id="@+id/ratingBarShow"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pavadinimasOver"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="27dp"
+                android:layout_marginLeft="27dp"
+                android:layout_marginTop="10dp"
+                android:clickable="false"
+                android:focusable="auto"
+                android:longClickable="false"
+                android:numStars="5"
+                android:stepSize=".5" />
 
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="111dp"
-            android:layout_height="37dp"
-            android:layout_below="@+id/ratingBar"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="33dp"
-            android:layout_marginRight="33dp"
-            android:onClick="rate"
-            android:text="Įvertinti" />
+            <TextView
+                android:id="@+id/reviewsNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pavadinimasOver"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/ratingBarShow"
+                android:layout_toRightOf="@+id/ratingBarShow"
+                android:text="(3)"
+                android:textSize="12sp" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/laikasOver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ratingBarShow"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="29dp"
+                android:layout_marginLeft="29dp"
+                android:layout_marginTop="6dp"
+                android:text="Visą parą"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/aprasymasOver"
+                android:layout_width="231dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/laikasOver"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="29dp"
+                android:layout_marginLeft="29dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="54dp"
+                android:layout_marginRight="54dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum faucibus, massa at imperdiet iaculis, orci purus pulvinar nulla, quis tincidunt dui diam porta turpis."
+                android:textSize="12sp" />
+
+            <View
+                android:id="@+id/linija"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="98dp"
+                android:layout_marginLeft="98dp"
+                android:layout_marginTop="289dp"
+                android:layout_marginEnd="95dp"
+                android:layout_marginRight="95dp"
+                android:background="@android:color/darker_gray"
+                android:foregroundGravity="center" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="239dp"
+                android:layout_height="47dp"
+                android:layout_below="@+id/linija"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="37dp"
+                android:layout_marginLeft="37dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="38dp"
+                android:layout_marginRight="38dp"
+                android:numStars="5"
+                android:stepSize=".5" />
+
+            <Button
+                android:id="@+id/buttonRate"
+                android:layout_width="118dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ratingBar"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="26dp"
+                android:layout_marginRight="26dp"
+                android:onClick="rate"
+                android:text="Įvertinti" />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:id="@+id/filterParkavimoZonos"
@@ -197,14 +269,15 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="26dp"
-        android:layout_marginLeft="26dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginEnd="237dp"
-        android:layout_marginRight="237dp"
-        android:layout_marginBottom="459dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="90dp"
+        android:layout_marginEnd="242dp"
+        android:layout_marginRight="242dp"
+        android:layout_marginBottom="412dp"
         android:animateLayoutChanges="true"
-        android:background="#FFFFFF">
+        android:background="@drawable/roundstyle"
+        android:backgroundTint="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -257,31 +330,6 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="163dp"
-        android:layout_height="105dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="239dp"
-        android:layout_marginLeft="239dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginRight="9dp"
-        android:layout_marginBottom="576dp">
-
-        <Switch
-            android:id="@+id/switchParkavimas"
-            android:layout_width="135dp"
-            android:layout_height="40dp"
-            android:background="#FFFFFF"
-            android:onClick="manageParking"
-            android:text="Parkavimas" />
     </RelativeLayout>
 
 </RelativeLayout>
