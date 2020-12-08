@@ -25,6 +25,7 @@ public class CreateZoneActivity extends AppCompatActivity {
     EditText nuo;
     EditText iki;
     EditText kaina;
+    EditText vietos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +41,19 @@ public class CreateZoneActivity extends AppCompatActivity {
         nuo = findViewById(R.id.nuoInput);
         iki = findViewById(R.id.ikiInput);
         kaina = findViewById(R.id.kainaOver);
+        vietos = findViewById(R.id.vietosOver);
 
         if(!isNew){
             pav.setText(MapsActivity.currentUserMarker.getName());
             apr.setText(MapsActivity.currentUserMarker.getDescription());
             nuo.setText(MapsActivity.currentUserMarker.getTimeStart());
             iki.setText(MapsActivity.currentUserMarker.getTimeEnd());
+
+            if(MapsActivity.currentUserMarker.getSpots() != null){
+                vietos.setText(Integer.toString(MapsActivity.currentUserMarker.getSpots()));
+            }
+
+
             if((int)MapsActivity.currentUserMarker.getKaina() == 0){
                 kaina.setFocusable(false);
                 kaina.setFocusableInTouchMode(false);
@@ -129,7 +137,8 @@ public class CreateZoneActivity extends AppCompatActivity {
                     " \"description\":\"" + apr.getText().toString() + "\", \"timeStart\": \"" + nuo.getText().toString()
                         + "\", \"timeEnd\":\"" + iki.getText().toString() + "\", \"image\": \"empty\"," +
                     "\"userId\":\"" + MapsActivity.user.getId() + "\"," +
-                    "\"kaina\":\"" + kaina.getText().toString() + "\"" +
+                    "\"kaina\":\"" + kaina.getText().toString() + "\"," +
+                    "\"numberOfSpots\":\"" + vietos.getText().toString() + "\"" +
                     "}" ;
 
 

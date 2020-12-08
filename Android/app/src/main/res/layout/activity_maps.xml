@@ -148,6 +148,19 @@
                 android:text="nemokama"
                 android:textSize="12sp" />
 
+            <TextView
+                android:id="@+id/vietosOver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pavadinimasOver"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="33dp"
+                android:layout_toEndOf="@+id/reviewsNum"
+                android:layout_toRightOf="@+id/reviewsNum"
+                android:text="0/1"
+                android:textSize="12sp" />
+
             <RatingBar
                 android:id="@+id/ratingBarShow"
                 style="@style/Widget.AppCompat.RatingBar.Small"

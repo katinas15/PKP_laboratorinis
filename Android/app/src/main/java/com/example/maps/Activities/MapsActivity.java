@@ -212,6 +212,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 TextView apr = findViewById(R.id.aprasymasOver);
                 TextView laikas = findViewById(R.id.laikasOver);
                 TextView kaina = findViewById(R.id.kainaOver);
+                TextView vietos = findViewById(R.id.vietosOver);
 
                 for(UserMarker m : markers){
                     if(m.getPoint().getX() == marker.getPosition().latitude && m.getPoint().getY() == marker.getPosition().longitude){
@@ -219,6 +220,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         apr.setText(m.getDescription());
                         laikas.setText(m.getTimeStart() + ":" + m.getTimeEnd());
                         kaina.setText("Kaina: " + Float.toString(m.getKaina()));
+                        vietos.setText(m.getOccupiedSpots() + "/" + m.getSpots());
 
 
                         currentMarkerId = m.getId();

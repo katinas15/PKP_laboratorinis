@@ -12,8 +12,10 @@ public class UserMarker {
     private String timeEnd;
     private String image;
     private float kaina;
+    private Integer numberOfSpots;
+    private Integer occupiedSpots;
 
-    public UserMarker(String id, String name, Coords point, String description, String timeStart, String timeEnd, String image, String userId, float kaina) {
+    public UserMarker(String id, String name, Coords point, String description, String timeStart, String timeEnd, String image, String userId, float kaina, int numberOfSpots, int occupiedSpots) {
         this._id = id;
         this.name = name;
         this.point = point;
@@ -23,6 +25,8 @@ public class UserMarker {
         this.image = image;
         this.userId = userId;
         this.kaina = kaina;
+        this.numberOfSpots = numberOfSpots;
+        this.occupiedSpots = occupiedSpots;
     }
 
     public float getKaina() {
@@ -63,5 +67,21 @@ public class UserMarker {
 
     public String getUserId() {
         return userId;
+    }
+
+    public Integer getSpots() {
+        if(numberOfSpots == null) {
+            return 1;
+        } else {
+            return numberOfSpots;
+        }
+    }
+
+    public Integer getOccupiedSpots() {
+        if(occupiedSpots == null){
+            return 0;
+        } else {
+            return occupiedSpots;
+        }
     }
 }

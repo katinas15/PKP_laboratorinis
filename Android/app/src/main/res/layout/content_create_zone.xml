@@ -59,7 +59,7 @@
 
     <EditText
         android:id="@+id/kainaOver"
-        android:layout_width="wrap_content"
+        android:layout_width="177dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/visaPara"
         android:layout_alignParentStart="true"
@@ -69,6 +69,20 @@
         android:layout_marginTop="25dp"
         android:ems="10"
         android:hint="Kaina/val"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/vietosOver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/visaPara"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="210dp"
+        android:layout_marginLeft="210dp"
+        android:layout_marginTop="26dp"
+        android:ems="10"
+        android:hint="Laisvos vietos"
         android:inputType="number" />
 
     <EditText

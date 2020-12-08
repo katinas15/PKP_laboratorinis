@@ -77,7 +77,7 @@ public class ReservationActivity extends AppCompatActivity {
                                 MapsActivity.map.refreshMarkers();
                             }
                         },
-                        2000
+                        1000
                 );
             }
 
