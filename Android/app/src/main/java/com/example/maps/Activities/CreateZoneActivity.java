@@ -1,5 +1,6 @@
 package com.example.maps.Activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -9,10 +10,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.maps.Controllers.NetController;
 import com.example.maps.R;
+import com.google.android.material.datepicker.MaterialDatePicker;
+
+import java.util.Map;
 
 public class CreateZoneActivity extends AppCompatActivity {
     double x;
@@ -48,6 +53,7 @@ public class CreateZoneActivity extends AppCompatActivity {
             apr.setText(MapsActivity.currentUserMarker.getDescription());
             nuo.setText(MapsActivity.currentUserMarker.getTimeStart());
             iki.setText(MapsActivity.currentUserMarker.getTimeEnd());
+            findViewById(R.id.buttonDelete).setVisibility(View.VISIBLE);
 
             if(MapsActivity.currentUserMarker.getSpots() != null){
                 vietos.setText(Integer.toString(MapsActivity.currentUserMarker.getSpots()));
@@ -153,6 +159,32 @@ public class CreateZoneActivity extends AppCompatActivity {
         }
     }
 
+    public void deleteZone(View v){
+        final String send = "{\"userId\": \"" + MapsActivity.user.getId() + "\"}";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Zona bus ištrinta!");
+        builder.setMessage("Ar tikrai norite ištrinti zoną?");
+        builder.setPositiveButton("Taip",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        UserZoneDelete uzd = new UserZoneDelete();
+                        uzd.execute(MapsActivity.currentUserMarker.get_id(), send);
+                    }
+                });
+        builder.setNegativeButton("Ne", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
     private final class UserZoneRegister extends AsyncTask<String, String, String> {
         @Override
         protected void onPreExecute() {
@@ -205,6 +237,60 @@ public class CreateZoneActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             System.out.println("GAUTA: " + result);
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    MapsActivity.map.markerClick(MapsActivity.currentUserMarker.getPoint().getX(), MapsActivity.currentUserMarker.getPoint().getY());
+                                }
+                            });
+                        }
+                    },
+                    1000
+            );
+            finish();
+        }
+    }
+
+    private final class UserZoneDelete extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(CreateZoneActivity.this, "Deleting zone...", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String url = "/userZone/" + params[0];
+//            System.out.println(url);
+            String postDataParams = params[1];
+//            System.out.println("ISSIUSTA: " + postDataParams);
+            try {
+                return NetController.sendDelete(url, postDataParams);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error! Unable to retrieve data from database!";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            System.out.println("GAUTA: " + result);
+            if(!result.equals("this marker doesnt belong to you")) {
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                MapsActivity.map.refreshMarkers();
+                            }
+                        },
+                        1000
+                );
+            }
             finish();
         }
     }

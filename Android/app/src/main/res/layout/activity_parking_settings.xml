@@ -8,11 +8,13 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="729dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="1dp">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/textView"
@@ -23,7 +25,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <EditText
                 android:id="@+id/editTextCarNum"
@@ -36,7 +38,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <Button
                 android:id="@+id/buttonSaveCarNum"
@@ -48,7 +50,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <Switch
                 android:id="@+id/switchParkavimas"
@@ -58,6 +60,17 @@
                 android:backgroundTint="@android:color/white"
                 android:onClick="manageParking"
                 android:text="Įjungti / Išjungti" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/buttonGetReports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gauti ataskaitas" />
         </TableRow>
     </TableLayout>
 

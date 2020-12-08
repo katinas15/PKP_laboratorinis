@@ -139,19 +139,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 String kaina;
                                 switch (currentZone.getColor()) {
                                     case "zalia":
-                                        kaina = "0.3€";
+                                        kaina = "0.3€/h";
                                         break;
                                     case "geltona":
-                                        kaina = "0.6€";
+                                        kaina = "0.6€/h";
                                         break;
                                     case "raudona":
-                                        kaina = "1.5€";
+                                        kaina = "1.5€/h";
                                         break;
                                     case "melyna":
-                                        kaina = "2.5€";
+                                        kaina = "2.5€/h";
                                         break;
                                     default:
-                                        kaina = "0.0€";
+                                        kaina = "0.0€/h";
                                 }
                                 tv.setText("Kaina: " + kaina);
                             }
@@ -207,47 +207,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-
-                TextView pav = findViewById(R.id.pavadinimasOver);
-                TextView apr = findViewById(R.id.aprasymasOver);
-                TextView laikas = findViewById(R.id.laikasOver);
-                TextView kaina = findViewById(R.id.kainaOver);
-                TextView vietos = findViewById(R.id.vietosOver);
-
-                for(UserMarker m : markers){
-                    if(m.getPoint().getX() == marker.getPosition().latitude && m.getPoint().getY() == marker.getPosition().longitude){
-                        pav.setText(m.getName());
-                        apr.setText(m.getDescription());
-                        laikas.setText(m.getTimeStart() + ":" + m.getTimeEnd());
-                        kaina.setText("Kaina: " + Float.toString(m.getKaina()));
-                        vietos.setText(m.getOccupiedSpots() + "/" + m.getSpots());
-
-
-                        currentMarkerId = m.getId();
-                        currentUserMarker = m;
-                        System.out.println("From zone: " + m.getUserId());
-                        System.out.println("From User: " + user.getId());
-                        System.out.println("-----");
-                        if(m.getUserId().equals(user.getId())){
-                            findViewById(R.id.buttonEditUserZone).setVisibility(View.VISIBLE);
-                        }
-                        else{
-                            findViewById(R.id.buttonEditUserZone).setVisibility(View.INVISIBLE);
-                        }
-                        GetZoneRating rate = new GetZoneRating();
-                        rate.execute(currentMarkerId);
-
-                        parkavimoZona.animate().translationY(0f).alpha(1.0f)
-                                .setDuration(300);
-                        break;
-                    }
-                }
+                markerClick(marker.getPosition().latitude, marker.getPosition().longitude);
 
                 return false;
             }
 
         });
 
+    }
+
+    public void markerClick(double x, double y){
+        TextView pav = findViewById(R.id.pavadinimasOver);
+        TextView apr = findViewById(R.id.aprasymasOver);
+        TextView laikas = findViewById(R.id.laikasOver);
+        TextView kaina = findViewById(R.id.kainaOver);
+        TextView vietos = findViewById(R.id.vietosOver);
+
+        for(UserMarker m : markers){
+            if(m.getPoint().getX() == x && m.getPoint().getY() == y){
+                pav.setText(m.getName());
+                apr.setText(m.getDescription());
+                laikas.setText(m.getTimeStart() + ":" + m.getTimeEnd());
+                kaina.setText("Kaina: " + Float.toString(m.getKaina()));
+                vietos.setText(m.getOccupiedSpots() + "/" + m.getSpots());
+
+
+                currentMarkerId = m.getId();
+                currentUserMarker = m;
+                System.out.println("From zone: " + m.getUserId());
+                System.out.println("From User: " + user.getId());
+                System.out.println("-----");
+                if(m.getUserId().equals(user.getId())){
+                    findViewById(R.id.buttonEditUserZone).setVisibility(View.VISIBLE);
+                }
+                else{
+                    findViewById(R.id.buttonEditUserZone).setVisibility(View.INVISIBLE);
+                }
+                GetZoneRating rate = new GetZoneRating();
+                rate.execute(currentMarkerId);
+
+                parkavimoZona.animate().translationY(0f).alpha(1.0f)
+                        .setDuration(300);
+                break;
+            }
+        }
     }
 
     public void editUserZone(View v){

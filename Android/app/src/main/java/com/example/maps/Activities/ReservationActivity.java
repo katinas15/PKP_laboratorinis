@@ -66,7 +66,7 @@ public class ReservationActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             System.out.println("GAUTA: " + result);
-            if(result == "jau rezervuota") {
+            if(result.equals("jau rezervuota")) {
                 Toast.makeText(ReservationActivity.this, "jau rezervuota", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(ReservationActivity.this, "Rezervuota", Toast.LENGTH_LONG).show();
