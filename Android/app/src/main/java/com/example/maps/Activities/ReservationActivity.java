@@ -68,8 +68,19 @@ public class ReservationActivity extends AppCompatActivity {
             System.out.println("GAUTA: " + result);
             if(result == "jau rezervuota") {
                 Toast.makeText(ReservationActivity.this, "jau rezervuota", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(ReservationActivity.this, "Rezervuota", Toast.LENGTH_LONG).show();
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                MapsActivity.map.refreshMarkers();
+                            }
+                        },
+                        2000
+                );
             }
-            
+
             finish();
         }
 

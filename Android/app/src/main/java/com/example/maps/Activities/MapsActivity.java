@@ -70,7 +70,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String currentMarkerId;
     static UserMarker currentUserMarker;
     static Zone currentZone;
-
+    static MapsActivity map;
 
 
     @Override
@@ -78,7 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        map = this;
         Intent dabar = this.getIntent();
 
         Gson gson = new Gson();
@@ -321,7 +321,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(MapsActivity.this, "Siunčiami zonų duomenys", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MapsActivity.this, "Siunčiami zonų duomenys", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -599,7 +599,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-
+    public void refreshMarkers(){
+        CheckBox cbGreen = findViewById(R.id.cbZaliaZona);
+        CheckBox cbYellow = findViewById(R.id.cbGeltonaZona);
+        CheckBox cbRed = findViewById(R.id.cbRaudonaZona);
+        CheckBox cbBlue = findViewById(R.id.cbMelynaZona);
+        GetMainZones getMain = new GetMainZones();
+        getMain.execute( Boolean.toString(cbGreen.isChecked()), Boolean.toString(cbYellow.isChecked()), Boolean.toString(cbRed.isChecked()), Boolean.toString(cbBlue.isChecked()));
+        GetUserZones getUser = new GetUserZones();
+        getUser.execute();
+    }
 
 
 
